@@ -32,14 +32,14 @@ public static class Utils
 
         foreach (var item in vectorX)
         {
-            sb.AppendFormat("{0:G15} ", item);
+            sb.Append($"{item:G15} ");
         }
 
         sb.Append('\n');
 
         foreach (var item in absVector)
         {
-            sb.AppendFormat("{0:G15} ", item);
+            sb.Append($"{item:G15} ");
         }
 
         var text = sb.ToString();
@@ -53,7 +53,7 @@ public static class Utils
 
         foreach (var item in vectorX)
         {
-            Console.Write("{0:G15} ", item);
+            Console.Write($"{item:G15} ");
         }
 
         Console.WriteLine();
