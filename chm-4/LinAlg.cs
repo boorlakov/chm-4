@@ -1,202 +1,137 @@
-namespace chm_4;
+namespace chm_4.LinAlg;
 
 using System;
 
-public static class LinAlg
+public static class Gauss
 {
-    public static double[] Solve(Matrix matrixA, double[] vectorB)
+    public static double[] Solve(double[,] matrixA, double[] vectorB)
     {
-        var vectorY = ForwardSubstitution(matrixA, vectorB);
+        var extendedMatrix = Elimination(matrixA, vectorB);
 
-        vectorB = BackSubstitution(matrixA, vectorB, vectorY);
+        var vectorX = BackSubstitution(extendedMatrix);
 
-        return vectorB;
+        return vectorX;
     }
 
-    private static double[] ForwardSubstitution(Matrix matrixA, double[] vectorB)
+    private static double[] BackSubstitution(double[,] extendedMatrix)
     {
-        var vectorY = new double[matrixA.Size];
+        var rowSize = extendedMatrix.GetLength(Axis.X);
+        var colSize = extendedMatrix.GetLength(Axis.Y);
 
-        for (var i = 0; i < matrixA.Size; i++)
+        var vectorX = new double[rowSize];
+
+        for (var row = rowSize - 1; row >= 0; row--)
         {
-            vectorY[i] = vectorB[i];
-            var indAl = matrixA.Ia[i + 1] - 1 - i;
+            vectorX[row] = extendedMatrix[row, colSize - 1];
 
-            for (var j = i - (matrixA.Ia[i + 1] - matrixA.Ia[i]); j < i; j++)
+            for (var col = row + 1; col < rowSize; col++)
             {
-                vectorY[i] -= matrixA.Al[indAl + j] * vectorY[j];
+                vectorX[row] -= extendedMatrix[row, col] * vectorX[col];
             }
 
-            if (!matrixA.Di[i].Equals(0.0))
-            {
-                vectorY[i] /= matrixA.Di[i];
-            }
+            vectorX[row] /= extendedMatrix[row, row];
         }
 
-        return vectorY;
+        return vectorX;
     }
 
-    private static double[] BackSubstitution(Matrix matrixA, double[] vectorB, double[] vectorY)
+    private static double[,] Elimination(double[,] matrixA, double[] vectorB)
     {
-        for (var i = matrixA.Size - 1; i >= 0; i--)
-        {
-            vectorB[i] = vectorY[i];
+        var rowSize = matrixA.GetLength(Axis.X);
+        var colSize = rowSize + 1;
 
-            for (var j = i + 1; j < matrixA.Size; j++)
+        var extendedMatrix = ExtendMatrix(matrixA, vectorB);
+
+        var pivotRow = 0;
+        var pivotCol = 0;
+
+        while (pivotRow < rowSize && pivotCol < colSize)
+        {
+            var maxRow = ArgMax(pivotRow, rowSize, pivotCol, extendedMatrix);
+
+            if (extendedMatrix[maxRow, pivotCol] == 0.0)
             {
-                if (i + 1 > j - (matrixA.Ia[j + 1] - matrixA.Ia[j]))
-                {
-                    vectorB[i] -= matrixA.Au[matrixA.Ia[j + 1] + i - j - 1] * vectorB[j];
-                }
+                pivotCol++;
             }
-        }
-
-        return vectorB;
-    }
-
-    public static double[] Abs(double[] lhs, double[] rhs)
-    {
-        var res = new double[lhs.Length];
-
-        for (var i = 0; i < res.Length; i++)
-        {
-            res[i] = Math.Abs(lhs[i] - rhs[i]);
-        }
-
-        return res;
-    }
-
-    public abstract class Gauss
-    {
-        public static double[] Solve(double[,] matrixA, double[] vectorB)
-        {
-            var extendedMatrix = Elimination(matrixA, vectorB);
-
-            var vectorX = BackSubstitution(extendedMatrix);
-
-            return vectorX;
-        }
-
-        private static double[] BackSubstitution(double[,] extendedMatrix)
-        {
-            var rowSize = extendedMatrix.GetLength(Axis.X);
-            var colSize = extendedMatrix.GetLength(Axis.Y);
-
-            var vectorX = new double[rowSize];
-
-            for (var row = rowSize - 1; row >= 0; row--)
+            else
             {
-                vectorX[row] = extendedMatrix[row, colSize - 1];
+                SwapRows(pivotRow, maxRow, extendedMatrix);
 
-                for (var col = row + 1; col < rowSize; col++)
+                for (var row = pivotRow + 1; row < rowSize; row++)
                 {
-                    vectorX[row] -= extendedMatrix[row, col] * vectorX[col];
-                }
+                    var f = extendedMatrix[row, pivotCol] / extendedMatrix[pivotRow, pivotCol];
+                    extendedMatrix[row, pivotCol] = 0.0;
 
-                vectorX[row] /= extendedMatrix[row, row];
-            }
-
-            return vectorX;
-        }
-
-        private static double[,] Elimination(double[,] matrixA, double[] vectorB)
-        {
-            var rowSize = matrixA.GetLength(Axis.X);
-            var colSize = rowSize + 1;
-
-            var extendedMatrix = ExtendMatrix(matrixA, vectorB);
-
-            var pivotRow = 0;
-            var pivotCol = 0;
-
-            while (pivotRow < rowSize && pivotCol < colSize)
-            {
-                var maxRow = ArgMax(pivotRow, rowSize, pivotCol, extendedMatrix);
-
-                if (extendedMatrix[maxRow, pivotCol] == 0.0)
-                {
-                    pivotCol++;
-                }
-                else
-                {
-                    SwapRows(pivotRow, maxRow, extendedMatrix);
-
-                    for (var row = pivotRow + 1; row < rowSize; row++)
+                    for (var col = pivotCol + 1; col < colSize; col++)
                     {
-                        var f = extendedMatrix[row, pivotCol] / extendedMatrix[pivotRow, pivotCol];
-                        extendedMatrix[row, pivotCol] = 0.0;
-
-                        for (var col = pivotCol + 1; col < colSize; col++)
-                        {
-                            extendedMatrix[row, col] -= extendedMatrix[pivotRow, col] * f;
-                        }
+                        extendedMatrix[row, col] -= extendedMatrix[pivotRow, col] * f;
                     }
-
-                    pivotRow++;
-                    pivotCol++;
                 }
-            }
 
-            return extendedMatrix;
+                pivotRow++;
+                pivotCol++;
+            }
         }
 
-        private static void SwapRows(int srcRow, int dstRow, double[,] matrixA)
+        return extendedMatrix;
+    }
+
+    private static void SwapRows(int srcRow, int dstRow, double[,] matrixA)
+    {
+        var colSize = matrixA.GetLength(Axis.Y);
+
+        for (var col = 0; col < colSize; col++)
         {
-            var colSize = matrixA.GetLength(Axis.Y);
-
-            for (var col = 0; col < colSize; col++)
-            {
-                Swap(ref matrixA[srcRow, col], ref matrixA[dstRow, col]);
-            }
+            Swap(ref matrixA[srcRow, col], ref matrixA[dstRow, col]);
         }
+    }
 
-        private static double[,] ExtendMatrix(double[,] matrixA, double[] vectorB)
+    private static double[,] ExtendMatrix(double[,] matrixA, double[] vectorB)
+    {
+        var rowSize = matrixA.GetLength(Axis.X);
+        var colSize = rowSize + 1;
+
+        var extendedMatrix = new double[rowSize, colSize];
+
+        for (var row = 0; row < rowSize; row++)
         {
-            var rowSize = matrixA.GetLength(Axis.X);
-            var colSize = rowSize + 1;
-
-            var extendedMatrix = new double[rowSize, colSize];
-
-            for (var row = 0; row < rowSize; row++)
+            for (var col = 0; col < rowSize; col++)
             {
-                for (var col = 0; col < rowSize; col++)
-                {
-                    extendedMatrix[row, col] = matrixA[row, col];
-                }
+                extendedMatrix[row, col] = matrixA[row, col];
             }
-
-            for (var row = 0; row < rowSize; row++)
-            {
-                extendedMatrix[row, colSize - 1] = vectorB[row];
-            }
-
-            return extendedMatrix;
         }
 
-        private static void Swap(ref double src, ref double dst) => (src, dst) = (dst, src);
-
-        private static int ArgMax(int srcRow, int dstRow, int pivotCol, double[,] matrixA)
+        for (var row = 0; row < rowSize; row++)
         {
-            // argmax equals to 0, because row (in theory) can have only zero-elements.
-            var maxRow = 0;
-            var elem = 0.0;
-
-            for (var row = srcRow; row < dstRow; row++)
-            {
-                if (elem < Math.Abs(matrixA[row, pivotCol]))
-                {
-                    elem = Math.Abs(matrixA[row, pivotCol]);
-                    maxRow = row;
-                }
-            }
-
-            return maxRow;
+            extendedMatrix[row, colSize - 1] = vectorB[row];
         }
 
-        private abstract class Axis
+        return extendedMatrix;
+    }
+
+    private static void Swap(ref double src, ref double dst) => (src, dst) = (dst, src);
+
+    private static int ArgMax(int srcRow, int dstRow, int pivotCol, double[,] matrixA)
+    {
+        // argmax equals to 0, because row (in theory) can have only zero-elements.
+        var maxRow = 0;
+        var elem = 0.0;
+
+        for (var row = srcRow; row < dstRow; row++)
         {
-            public const int X = 0;
-            public const int Y = 1;
+            if (elem < Math.Abs(matrixA[row, pivotCol]))
+            {
+                elem = Math.Abs(matrixA[row, pivotCol]);
+                maxRow = row;
+            }
         }
+
+        return maxRow;
+    }
+
+    private abstract class Axis
+    {
+        public const int X = 0;
+        public const int Y = 1;
     }
 }
