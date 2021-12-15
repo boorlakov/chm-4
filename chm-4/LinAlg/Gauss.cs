@@ -1,7 +1,5 @@
 namespace chm_4.LinAlg;
 
-using System;
-
 public static class Gauss
 {
     public static double[] Solve(double[,] matrixA, double[] vectorB)
