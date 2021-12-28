@@ -8,5 +8,6 @@ internal static class Program
     {
         var content = File.ReadAllText("params.json");
         var parameters = JsonSerializer.Deserialize<ParamsModel>(content);
+        var solution = SONLE.Solve("IntersectingOnePointСircles", parameters!.InitApprox);
     }
 } 
