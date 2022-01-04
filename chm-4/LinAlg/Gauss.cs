@@ -2,6 +2,12 @@ namespace chm_4.LinAlg;
 
 public static class Gauss
 {
+    /// <summary>
+    /// Solves SLAE like Ax = b with Gauss method
+    /// </summary>
+    /// <param name="matrixA">Matrix in dense format</param>
+    /// <param name="vectorB">Vector of right side</param>
+    /// <returns>Solution vector</returns>
     public static double[] Solve(double[,] matrixA, double[] vectorB)
     {
         var extendedMatrix = Elimination(matrixA, vectorB);
