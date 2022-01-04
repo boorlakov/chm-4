@@ -52,12 +52,12 @@ public static class FuncDer
     /// </summary>
     /// <returns>Value of analytic derivative at given args point</returns>
     /// <exception cref="ArgumentException">If given invalid function</exception>
-    public static double CalcAnalytic(string systemName, double[] args, int functionNum, int parameterNumber)
+    public static double CalcAnalytic(string systemName, double[] args, int functionNum, int parameterNum)
     {
         switch (functionNum)
         {
             case 0:
-                switch (parameterNumber)
+                switch (parameterNum)
                 {
                     case 0:
                         return systemName switch
@@ -83,7 +83,7 @@ public static class FuncDer
 
                 break;
             case 1:
-                switch (parameterNumber)
+                switch (parameterNum)
                 {
                     case 0:
                         return systemName switch
@@ -109,7 +109,7 @@ public static class FuncDer
 
                 break;
             case 2:
-                switch (parameterNumber)
+                switch (parameterNum)
                 {
                     case 0:
                         return systemName switch
