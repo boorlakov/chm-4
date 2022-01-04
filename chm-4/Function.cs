@@ -5,7 +5,7 @@ public static class Function
     /// <summary>
     /// SOE kind of
     /// 1) x^2 + y^2 = 25
-    /// 2) (x - 11)^2 - y^2 = 25
+    /// 2) (x - 11)^2 + y^2 = 25
     /// </summary>
     /// <returns></returns>
     /// <exception cref="ArgumentException">If required more than 2 equations</exception>
@@ -22,7 +22,7 @@ public static class Function
     /// <summary>
     /// SOE kind of
     /// 1) x^2 + y^2 = 25
-    /// 2) (x - 10)^2 - y^2 = 25
+    /// 2) (x - 10)^2 + y^2 = 25
     /// </summary>
     /// <returns></returns>
     /// <exception cref="ArgumentException">If required more than 2 equations</exception>
@@ -39,7 +39,7 @@ public static class Function
     /// <summary>
     /// SOE kind of
     /// 1) x^2 + y^2 = 25
-    /// 2) (x - 9)^2 - y^2 = 25
+    /// 2) (x - 9)^2 + y^2 = 25
     /// </summary>
     /// <returns></returns>
     /// <exception cref="ArgumentException">If required more than 2 equations</exception>
@@ -56,7 +56,7 @@ public static class Function
     /// <summary>
     /// SOE kind of
     /// 1) x^2 + y^2 = 25
-    /// 2) (x - 10)^2 - y^2 = 25
+    /// 2) (x - 10)^2 + y^2 = 25
     /// 3) x - y = -5
     /// </summary>
     /// <returns></returns>
