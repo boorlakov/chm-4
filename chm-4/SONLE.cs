@@ -1,3 +1,5 @@
+using static chm_4.LinAlg.GeneralOperations;
+
 namespace chm_4;
 
 /// <summary>
@@ -5,67 +7,204 @@ namespace chm_4;
 /// </summary>
 public class SONLE
 {
-    public static int FunctionsNumber { get; private set; }
-    public static int VariablesNumber { get; private set; }
+    private static int FunctionsNumber { get; set; }
+    private static int VariablesNumber { get; set; }
 
     /// <summary>
-    /// Solves system of non-linear equations
+    /// Solves system of non-linear equations with Newton's method
     /// </summary>
     /// <param name="testName"> Switching in tests names, valid names is:
-    /// "IntersectingOnePointСircles",
-    /// "IntersectingTwoPointsСircles",
-    /// "IntersectingNoPointsСircles",
-    /// "IntersectingOnePointСirclesWithLine",
-    /// "ThreeIntersectingLines".
+    /// "Intersect1PointCircle",
+    /// "Intersect2PointCircle",
+    /// "Intersect0PointCircle",
+    /// "Intersect1PointCircleLine",
+    /// "Intersect3Line".
     /// </param>
     /// <param name="initApprox"> Initial approximation. </param>
     /// <returns> Solution vector </returns>
     /// <exception cref="ArgumentException"> If passes invalid test name </exception>
     public static double[] Solve(string testName, double[] initApprox)
     {
+        var jacobi = CalcJacobi(testName, initApprox);
+        var f = CalcFSLAE(testName, initApprox);
+
+        var dx = LinAlg.Gauss.Solve(jacobi, f);
+
         var x = new double[initApprox.Length];
+        var beta = 1;
 
-        switch (testName)
+        for (var i = 0; i < x.Length; i++)
         {
-           case "IntersectingOnePointСircles":
-               for (var i = 0; i < FunctionsNumber; i++)
-               {
-                   Function.IntersectingOnePointСircles(i, initApprox);
-               }
-               break;
+            x[i] += beta * dx[i];
+        }
 
-           case "IntersectingTwoPointsСircles":
-               for (var i = 0; i < FunctionsNumber; i++)
-               {
-                   Function.IntersectingTwoPointsСircles(i, initApprox);
-               }
-               break;
+        var fNew = CalcF(testName, initApprox);
 
-           case "IntersectingNoPointsСircles":
-               for (var i = 0; i < FunctionsNumber; i++)
-               {
-                   Function.IntersectingNoPointsСircles(i, initApprox);
-               }
-               break;
-
-           case "IntersectingOnePointСirclesWithLine":
-               for (var i = 0; i < FunctionsNumber; i++)
-               {
-                   Function.IntersectingOnePointСirclesWithLine(i, initApprox);
-               }
-               break;
-
-           case "ThreeIntersectingLines":
-               for (var i = 0; i < FunctionsNumber; i++)
-               {
-                   Function.ThreeIntersectingLines(i, initApprox);
-               }
-               break;
-
-           default:
-               throw new ArgumentException("No such testName exist.");
+        if (Norm(fNew) < Norm(f))
+        {
+            beta /= 2;
         }
 
         return x;
+    }
+
+    private static double[] CalcFSLAE(string testName, double[] initApprox)
+    {
+        var f = new double[initApprox.Length];
+
+        switch (testName)
+        {
+            case "Intersect1PointCircle":
+                FunctionsNumber = 2;
+                VariablesNumber = 2;
+
+                for (var i = 0; i < FunctionsNumber; i++)
+                {
+                    f[i] = Function.Intersect1PointCircle(i, initApprox);
+                }
+
+                break;
+
+            case "Intersect2PointCircle":
+                FunctionsNumber = 2;
+                VariablesNumber = 2;
+
+                for (var i = 0; i < FunctionsNumber; i++)
+                {
+                    f[i] = Function.Intersect2PointCircle(i, initApprox);
+                }
+
+                break;
+
+
+            case "Intersect0PointCircle":
+                FunctionsNumber = 2;
+                VariablesNumber = 2;
+
+                for (var i = 0; i < FunctionsNumber; i++)
+                {
+                    f[i] = Function.Intersect0PointCircle(i, initApprox);
+                }
+
+                break;
+
+
+            case "Intersect1PointCircleLine":
+                FunctionsNumber = 3;
+                VariablesNumber = 2;
+
+                for (var i = 0; i < FunctionsNumber; i++)
+                {
+                    f[i] = Function.Intersect1PointCircleLine(i, initApprox);
+                }
+
+                break;
+
+            case "Intersect3Line":
+                FunctionsNumber = 3;
+                VariablesNumber = 2;
+
+                for (var i = 0; i < FunctionsNumber; i++)
+                {
+                    f[i] = Function.Intersect3Line(i, initApprox);
+                }
+
+                break;
+
+            default:
+                throw new ArgumentException("No such testName exist.");
+        }
+
+        for (var i = 0; i < FunctionsNumber; i++)
+        {
+            f[i] *= -1;
+        }
+
+        return f;
+    }
+
+    private static double[] CalcF(string testName, double[] initApprox)
+    {
+        var f = new double[initApprox.Length];
+
+        switch (testName)
+        {
+            case "Intersect1PointCircle":
+                FunctionsNumber = 2;
+                VariablesNumber = 2;
+
+                for (var i = 0; i < FunctionsNumber; i++)
+                {
+                    f[i] = Function.Intersect1PointCircle(i, initApprox);
+                }
+
+                break;
+
+            case "Intersect2PointCircle":
+                FunctionsNumber = 2;
+                VariablesNumber = 2;
+
+                for (var i = 0; i < FunctionsNumber; i++)
+                {
+                    f[i] = Function.Intersect2PointCircle(i, initApprox);
+                }
+
+                break;
+
+
+            case "Intersect0PointCircle":
+                FunctionsNumber = 2;
+                VariablesNumber = 2;
+
+                for (var i = 0; i < FunctionsNumber; i++)
+                {
+                    f[i] = Function.Intersect0PointCircle(i, initApprox);
+                }
+
+                break;
+
+
+            case "Intersect1PointCircleLine":
+                FunctionsNumber = 3;
+                VariablesNumber = 2;
+
+                for (var i = 0; i < FunctionsNumber; i++)
+                {
+                    f[i] = Function.Intersect1PointCircleLine(i, initApprox);
+                }
+
+                break;
+
+            case "Intersect3Line":
+                FunctionsNumber = 3;
+                VariablesNumber = 2;
+
+                for (var i = 0; i < FunctionsNumber; i++)
+                {
+                    f[i] = Function.Intersect3Line(i, initApprox);
+                }
+
+                break;
+
+            default:
+                throw new ArgumentException("No such testName exist.");
+        }
+
+        return f;
+    }
+
+    private static double[,] CalcJacobi(string testName, double[] initApprox)
+    {
+        var jacobi = new double[initApprox.Length, initApprox.Length];
+        
+        for (var i = 0; i < FunctionsNumber; i++)
+        {
+            for (var j = 0; j < VariablesNumber; j++)
+            {
+                jacobi[i, j] = FuncDer.CalcAnalytic(testName, initApprox, i, j);
+            }
+        }
+
+        return jacobi;
     }
 }

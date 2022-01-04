@@ -9,13 +9,13 @@ public static class FuncDer
     /// </summary>
     /// <returns>Value of numerical derivative at given args point</returns>
     /// <exception cref="ArgumentException">If given invalid function</exception>
-    public static double CalcNumerical(string functionName, double[] args, int i)
+    public static double CalcNumerical(string functionName, double[] args, int i, int j)
     {
         const double h = 1e-7;
 
         var argsPlusH = new double[args.Length];
         args.AsSpan().CopyTo(argsPlusH);
-        argsPlusH[i] = args[i] + h;
+        argsPlusH[j] += h;
         
         return i switch
         {
@@ -53,26 +53,20 @@ public static class FuncDer
     /// <returns>Value of analytic derivative at given args point</returns>
     /// <exception cref="ArgumentException">If given invalid function</exception>
     /// <exception cref="Exception">If switch doesn't work properly</exception>
-    public static double CalcAnalytic(string functionName, double[] args, int i)
+    public static double CalcAnalytic(string functionName, double[] args, int i, int j)
     {
         const double h = 1e-7;
 
         var argsPlusH = new double[args.Length];
 
-        for (var j = 0; j < argsPlusH.Length; j++)
-        {
-            argsPlusH[i] = args[i] + h;
-        }
-
         return i switch
         {
             0 => functionName switch
             {
-                "Intersect1PointCircle" => (Intersect1PointCircle(i, argsPlusH) - Intersect1PointCircle(i, args)) / h,
+                "Intersect1PointCircle" => 2 * args[0] + args[1] * args[1],
                 "Intersect2PointCircle" => (Intersect2PointCircle(i, argsPlusH) - Intersect2PointCircle(i, args)) / h,
                 "Intersect0PointCircle" => (Intersect0PointCircle(i, argsPlusH) - Intersect0PointCircle(i, args)) / h,
-                "Intersect1PointCircleLine" =>
-                    (Intersect1PointCircleLine(i, argsPlusH) - Intersect1PointCircleLine(i, args)) / h,
+                "Intersect1PointCircleLine" => (Intersect1PointCircleLine(i, argsPlusH) - Intersect1PointCircleLine(i, args)) / h,
                 "Intersect3Line" => (Intersect3Line(i, argsPlusH) - Intersect3Line(i, args)) / h,
                 _ => throw new ArgumentException($"No such function as {functionName} exist.")
             },
