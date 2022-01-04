@@ -5,7 +5,7 @@ namespace chm_4;
 public static class FuncDer
 {
     /// <summary>
-    /// Numerical derivative of i-th function that given upper
+    /// Numerical derivative of functionNum-th function that given upper
     /// </summary>
     /// <returns>Value of numerical derivative at given args point</returns>
     /// <exception cref="ArgumentException">If given invalid function</exception>
@@ -48,82 +48,82 @@ public static class FuncDer
     }
 
     /// <summary>
-    /// Analytic derivative of i-th function that given upper
+    /// Analytic derivative of function that given upper
     /// </summary>
     /// <returns>Value of analytic derivative at given args point</returns>
     /// <exception cref="ArgumentException">If given invalid function</exception>
-    public static double CalcAnalytic(string functionName, double[] args, int i, int j)
+    public static double CalcAnalytic(string systemName, double[] args, int functionNum, int parameterNumber)
     {
-        switch (i)
+        switch (functionNum)
         {
             case 0:
-                switch (j)
+                switch (parameterNumber)
                 {
                     case 0:
-                        return functionName switch
+                        return systemName switch
                         {
                             "Intersect1PointCircle" => 2 * args[0],
                             "Intersect2PointCircle" => 2 * args[0],
                             "Intersect0PointCircle" => 2 * args[0],
                             "Intersect1PointCircleLine" => 2 * args[0],
                             "Intersect3Line" => -1.0,
-                            _ => throw new ArgumentException($"No such function as {functionName} exist.")
+                            _ => throw new ArgumentException($"No such function as {systemName} exist.")
                         };
                     case 1:
-                        return functionName switch
+                        return systemName switch
                         {
                             "Intersect1PointCircle" => 2 * args[1],
                             "Intersect2PointCircle" => 2 * args[1],
                             "Intersect0PointCircle" => 2 * args[1],
                             "Intersect1PointCircleLine" => 2 * args[1],
                             "Intersect3Line" => 1.0,
-                            _ => throw new ArgumentException($"No such function as {functionName} exist.")
+                            _ => throw new ArgumentException($"No such function as {systemName} exist.")
                         };
                 }
 
                 break;
             case 1:
-                switch (j)
+                switch (parameterNumber)
                 {
                     case 0:
-                        return functionName switch
+                        return systemName switch
                         {
                             "Intersect1PointCircle" => 2 * (args[0] - 10),
                             "Intersect2PointCircle" => 2 * (args[0] - 9),
                             "Intersect0PointCircle" => 2 * (args[0] - 11),
                             "Intersect1PointCircleLine" => 2 * (args[0] - 10),
                             "Intersect3Line" => -2.0,
-                            _ => throw new ArgumentException($"No such function as {functionName} exist.")
+                            _ => throw new ArgumentException($"No such function as {systemName} exist.")
                         };
                     case 1:
-                        return functionName switch
+                        return systemName switch
                         {
                             "Intersect1PointCircle" => 1,
                             "Intersect2PointCircle" => 2,
                             "Intersect0PointCircle" => 3,
                             "Intersect1PointCircleLine" => 2 * args[1],
                             "Intersect3Line" => 1.0,
-                            _ => throw new ArgumentException($"No such function as {functionName} exist.")
+                            _ => throw new ArgumentException($"No such function as {systemName} exist.")
                         };
                 }
 
                 break;
             case 2:
-                switch (j)
+                switch (parameterNumber)
                 {
                     case 0:
-                        return functionName switch
+                        return systemName switch
                         {
                             "Intersect1PointCircleLine" => -1.0,
                             "Intersect3Line" => 1.0,
-                            _ => throw new ArgumentException($"No such function as {functionName} exist.")
+                            _ => throw new ArgumentException($"No such function as {systemName} exist.")
                         };
                     case 1:
-                        return functionName switch
+                        return systemName switch
                         {
                             "Intersect1PointCircleLine" => 1.0,
                             "Intersect3Line" => 1.0,
-                            _ => throw new ArgumentException($"No such function as {functionName} exist.")
+                            _ => throw new ArgumentException($"No such function as {systemName} exist.")
                         };
                 }
 
