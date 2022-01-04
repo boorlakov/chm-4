@@ -24,20 +24,23 @@ public static class Utils
             .ToArray();
     }
 
+    /// <summary>
+    /// Read vector from file, values separated by comma. Use another name for more concrete sense
+    /// </summary>
+    /// <param name="file">Already opened file</param>
+    /// <returns>Static double array</returns>
     public static double[] VectorFromFile(StreamReader file) => ReadDoubles(file);
 
-    public static void ExportToFile(StreamWriter outputFile, double[] vectorX, double[] absVector)
+    /// <summary>
+    /// Exports double static array to already opened file
+    /// </summary>
+    /// <param name="outputFile">File, where exported</param>
+    /// <param name="vectorX">Array to export</param>
+    public static void ExportToFile(StreamWriter outputFile, double[] vectorX)
     {
         var sb = new StringBuilder();
 
         foreach (var item in vectorX)
-        {
-            sb.Append($"{item:G15} ");
-        }
-
-        sb.Append('\n');
-
-        foreach (var item in absVector)
         {
             sb.Append($"{item:G15} ");
         }
@@ -47,6 +50,10 @@ public static class Utils
         outputFile.Write(text);
     }
 
+    /// <summary>
+    /// Prints array in console with space separated values
+    /// </summary>
+    /// <param name="vectorX">Array to print</param>
     public static void Pprint(double[] vectorX)
     {
         Console.WriteLine("\nVector PPRINT:");
