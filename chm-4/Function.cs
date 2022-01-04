@@ -2,6 +2,13 @@ namespace chm_4;
 
 public static class Function
 {
+    /// <summary>
+    /// SOE kind of
+    /// 1) x^2 + y^2 = 25
+    /// 2) (x - 11)^2 - y^2 = 25
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException">If required more than 2 equations</exception>
     public static double IntersectingNoPointsСircles(int i, double[] x)
     {
         return i switch
@@ -12,6 +19,13 @@ public static class Function
         };
     }
 
+    /// <summary>
+    /// SOE kind of
+    /// 1) x^2 + y^2 = 25
+    /// 2) (x - 10)^2 - y^2 = 25
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException">If required more than 2 equations</exception>
     public static double IntersectingOnePointСircles(int i, double[] x)
     {
         return i switch
@@ -22,6 +36,13 @@ public static class Function
         };
     }
 
+    /// <summary>
+    /// SOE kind of
+    /// 1) x^2 + y^2 = 25
+    /// 2) (x - 9)^2 - y^2 = 25
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException">If required more than 2 equations</exception>
     public static double IntersectingTwoPointsСircles(int i, double[] x)
     {
         return i switch
@@ -32,6 +53,14 @@ public static class Function
         };
     }
 
+    /// <summary>
+    /// SOE kind of
+    /// 1) x^2 + y^2 = 25
+    /// 2) (x - 10)^2 - y^2 = 25
+    /// 3) x - y = -5
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException">If required more than 3 equations</exception>
     public static double IntersectingOnePointСirclesWithLine(int i, double[] x)
     {
         return i switch
@@ -43,6 +72,14 @@ public static class Function
         };
     }
 
+    /// <summary>
+    /// SOE kind of
+    /// 1) y - x = -5
+    /// 2) y - 2x = 5
+    /// 3) y + x = 5
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException">If required more than 3 equations</exception>
     public static double ThreeIntersectingLines(int i, double[] x)
     {
         return i switch
@@ -54,6 +91,12 @@ public static class Function
         };
     }
 
+    /// <summary>
+    /// Numerical derivative of i-th function that given upper
+    /// </summary>
+    /// <returns>Value of numerical derivative at given x point</returns>
+    /// <exception cref="ArgumentException">If given invalid function</exception>
+    /// <exception cref="Exception">If switch doesn't work properly</exception>
     public static double NumericalDerivative(string functionName, double[] x, int i)
     {
         switch (i)
@@ -139,6 +182,12 @@ public static class Function
         throw new Exception($"Numerical derivative is broken");
     }
 
+    /// <summary>
+    /// Analytic derivative of i-th function that given upper
+    /// </summary>
+    /// <returns>Value of analytic derivative at given x point</returns>
+    /// <exception cref="ArgumentException">If given invalid function</exception>
+    /// <exception cref="Exception">If switch doesn't work properly</exception>
     public static double AnalyticDerivative(string functionName, double[] x, int i)
     {
         switch (i)
