@@ -23,9 +23,9 @@ public class SONLE
     /// <param name="initApprox"> Initial approximation. </param>
     /// <returns> Solution vector </returns>
     /// <exception cref="ArgumentException"> If passes invalid test name </exception>
-    public static double[] Solve(string testName, double[] initApprox)
+    public static double[] Solve(string testName, double[] initApprox, string mode)
     {
-        var jacobi = CalcJacobi(testName, initApprox);
+        var jacobi = CalcJacobi(testName, initApprox, mode);
         var f = CalcFSLAE(testName, initApprox);
 
         var dx = LinAlg.Gauss.Solve(jacobi, f);
@@ -47,7 +47,7 @@ public class SONLE
 
         return x;
     }
-
+                          
     private static double[] CalcFSLAE(string testName, double[] initApprox)
     {
         var f = new double[initApprox.Length];
@@ -193,17 +193,24 @@ public class SONLE
         return f;
     }
 
-    private static double[,] CalcJacobi(string testName, double[] initApprox)
+    private static double[,] CalcJacobi(string testName, double[] initApprox, string mode)
     {
         var jacobi = new double[initApprox.Length, initApprox.Length];
-        
+
+        var derivative = FuncDer.CalcAnalytic;
+
+        if (mode == "Numerical")
+        {
+            derivative = FuncDer.CalcNumerical;
+        }
+
         for (var i = 0; i < FunctionsNumber; i++)
         {
             for (var j = 0; j < VariablesNumber; j++)
             {
-                jacobi[i, j] = FuncDer.CalcAnalytic(testName, initApprox, i, j);
+                jacobi[i, j] = derivative(testName, initApprox, i, j);
             }
-        }
+        }                
 
         return jacobi;
     }

@@ -14,7 +14,7 @@ public static class Function
         return i switch
         {
             0 => args[0] * args[0] + args[1] * args[1] - 25,
-            1 => (args[0] - 11) * (args[0] - 11) - args[1] * args[1] - 25,
+            1 => (args[0] - 11) * (args[0] - 11) + args[1] * args[1] - 25,
             _ => throw new ArgumentException($"No such index ({i}) exist")
         };
     }
@@ -31,7 +31,7 @@ public static class Function
         return i switch
         {
             0 => args[0] * args[0] + args[1] * args[1] - 25,
-            1 => (args[0] - 10) * (args[0] - 10) - args[1] * args[1] - 25,
+            1 => (args[0] - 10) * (args[0] - 10) + args[1] * args[1] - 25,
             _ => throw new ArgumentException($"No such index ({i}) exist")
         };
     }
@@ -48,7 +48,7 @@ public static class Function
         return i switch
         {
             0 => args[0] * args[0] + args[1] * args[1] - 25,
-            1 => (args[0] - 9) * (args[0] - 9) - args[1] * args[1] - 25,
+            1 => (args[0] - 9) * (args[0] - 9) + args[1] * args[1] - 25,
             _ => throw new ArgumentException($"No such index ({i}) exist")
         };
     }
@@ -66,7 +66,7 @@ public static class Function
         return i switch
         {
             0 => args[0] * args[0] + args[1] * args[1] - 25,
-            1 => (args[0] - 10) * (args[0] - 10) - args[1] * args[1] - 25,
+            1 => (args[0] - 10) * (args[0] - 10) + args[1] * args[1] - 25,
             2 => args[1] - args[0] + 5,
             _ => throw new ArgumentException($"No such index ({i}) exist")
         };

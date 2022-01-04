@@ -52,42 +52,84 @@ public static class FuncDer
     /// </summary>
     /// <returns>Value of analytic derivative at given args point</returns>
     /// <exception cref="ArgumentException">If given invalid function</exception>
-    /// <exception cref="Exception">If switch doesn't work properly</exception>
     public static double CalcAnalytic(string functionName, double[] args, int i, int j)
     {
-        const double h = 1e-7;
-
-        var argsPlusH = new double[args.Length];
-
-        return i switch
+        switch (i)
         {
-            0 => functionName switch
-            {
-                "Intersect1PointCircle" => 2 * args[0] + args[1] * args[1],
-                "Intersect2PointCircle" => (Intersect2PointCircle(i, argsPlusH) - Intersect2PointCircle(i, args)) / h,
-                "Intersect0PointCircle" => (Intersect0PointCircle(i, argsPlusH) - Intersect0PointCircle(i, args)) / h,
-                "Intersect1PointCircleLine" => (Intersect1PointCircleLine(i, argsPlusH) - Intersect1PointCircleLine(i, args)) / h,
-                "Intersect3Line" => (Intersect3Line(i, argsPlusH) - Intersect3Line(i, args)) / h,
-                _ => throw new ArgumentException($"No such function as {functionName} exist.")
-            },
-            1 => functionName switch
-            {
-                "Intersect1PointCircle" => (Intersect1PointCircle(i, argsPlusH) - Intersect1PointCircle(i, args)) / h,
-                "Intersect2PointCircle" => (Intersect2PointCircle(i, argsPlusH) - Intersect2PointCircle(i, args)) / h,
-                "Intersect0PointCircle" => (Intersect0PointCircle(i, argsPlusH) - Intersect0PointCircle(i, args)) / h,
-                "Intersect1PointCircleLine" =>
-                    (Intersect1PointCircleLine(i, argsPlusH) - Intersect1PointCircleLine(i, args)) / h,
-                "Intersect3Line" => (Intersect3Line(i, argsPlusH) - Intersect3Line(i, args)) / h,
-                _ => throw new ArgumentException($"No such function as {functionName} exist.")
-            },
-            2 => functionName switch
-            {
-                "Intersect1PointCircleLine" => (Intersect1PointCircleLine(i, argsPlusH) -
-                                                Intersect1PointCircleLine(i, args)) / h,
-                "Intersect3Line" => (Intersect3Line(i, argsPlusH) - Intersect3Line(i, args)) / h,
-                _ => throw new ArgumentException($"No such function as {functionName} exist.")
-            },
-            _ => throw new ArgumentException($"No such index ({i}) exist.")
-        };
+            case 0:
+                switch (j)
+                {
+                    case 0:
+                        return functionName switch
+                        {
+                            "Intersect1PointCircle" => 2 * args[0],
+                            "Intersect2PointCircle" => 2 * args[0],
+                            "Intersect0PointCircle" => 2 * args[0],
+                            "Intersect1PointCircleLine" => 2 * args[0],
+                            "Intersect3Line" => -1.0,
+                            _ => throw new ArgumentException($"No such function as {functionName} exist.")
+                        };
+                    case 1:
+                        return functionName switch
+                        {
+                            "Intersect1PointCircle" => 2 * args[1],
+                            "Intersect2PointCircle" => 2 * args[1],
+                            "Intersect0PointCircle" => 2 * args[1],
+                            "Intersect1PointCircleLine" => 2 * args[1],
+                            "Intersect3Line" => 1.0,
+                            _ => throw new ArgumentException($"No such function as {functionName} exist.")
+                        };
+                }
+
+                break;
+            case 1:
+                switch (j)
+                {
+                    case 0:
+                        return functionName switch
+                        {
+                            "Intersect1PointCircle" => 2 * (args[0] - 10),
+                            "Intersect2PointCircle" => 2 * (args[0] - 9),
+                            "Intersect0PointCircle" => 2 * (args[0] - 11),
+                            "Intersect1PointCircleLine" => 2 * (args[0] - 10),
+                            "Intersect3Line" => -2.0,
+                            _ => throw new ArgumentException($"No such function as {functionName} exist.")
+                        };
+                    case 1:
+                        return functionName switch
+                        {
+                            "Intersect1PointCircle" => 1,
+                            "Intersect2PointCircle" => 2,
+                            "Intersect0PointCircle" => 3,
+                            "Intersect1PointCircleLine" => 2 * args[1],
+                            "Intersect3Line" => 1.0,
+                            _ => throw new ArgumentException($"No such function as {functionName} exist.")
+                        };
+                }
+
+                break;
+            case 2:
+                switch (j)
+                {
+                    case 0:
+                        return functionName switch
+                        {
+                            "Intersect1PointCircleLine" => -1.0,
+                            "Intersect3Line" => 1.0,
+                            _ => throw new ArgumentException($"No such function as {functionName} exist.")
+                        };
+                    case 1:
+                        return functionName switch
+                        {
+                            "Intersect1PointCircleLine" => 1.0,
+                            "Intersect3Line" => 1.0,
+                            _ => throw new ArgumentException($"No such function as {functionName} exist.")
+                        };
+                }
+
+                break;
+        }
+
+        throw new Exception("All died");
     }
 }
