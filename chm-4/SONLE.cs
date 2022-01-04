@@ -13,7 +13,7 @@ public class SONLE
     /// <summary>
     /// Solves system of non-linear equations with Newton's method
     /// </summary>
-    /// <param name="testName"> Switching in tests names, valid names is:
+    /// <param name="systemName"> Switching in tests names, valid names is:
     /// "Intersect1PointCircle",
     /// "Intersect2PointCircle",
     /// "Intersect0PointCircle",
@@ -21,12 +21,13 @@ public class SONLE
     /// "Intersect3Line".
     /// </param>
     /// <param name="initApprox"> Initial approximation. </param>
+    /// <param name="mode">Mode of differentiation (Analytical / Numerical)</param>
     /// <returns> Solution vector </returns>
     /// <exception cref="ArgumentException"> If passes invalid test name </exception>
-    public static double[] Solve(string testName, double[] initApprox, string mode)
+    public static double[] Solve(string systemName, double[] initApprox, string mode)
     {
-        var jacobi = CalcJacobi(testName, initApprox, mode);
-        var f = CalcFSLAE(testName, initApprox);
+        var jacobi = CalcJacobi(systemName, initApprox, mode);
+        var f = CalcFSLAE(systemName, initApprox);
 
         var dx = LinAlg.Gauss.Solve(jacobi, f);
 
@@ -38,7 +39,7 @@ public class SONLE
             x[i] += beta * dx[i];
         }
 
-        var fNew = CalcF(testName, initApprox);
+        var fNew = CalcF(systemName, x);
 
         if (Norm(fNew) < Norm(f))
         {
