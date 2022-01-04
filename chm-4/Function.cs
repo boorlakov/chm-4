@@ -9,7 +9,7 @@ public static class Function
     /// </summary>
     /// <returns></returns>
     /// <exception cref="ArgumentException">If required more than 2 equations</exception>
-    public static double IntersectingNoPointsСircles(int i, double[] x)
+    public static double Intersect0PointCircle(int i, double[] x)
     {
         return i switch
         {
@@ -26,7 +26,7 @@ public static class Function
     /// </summary>
     /// <returns></returns>
     /// <exception cref="ArgumentException">If required more than 2 equations</exception>
-    public static double IntersectingOnePointСircles(int i, double[] x)
+    public static double Intersect1PointCircle(int i, double[] x)
     {
         return i switch
         {
@@ -43,7 +43,7 @@ public static class Function
     /// </summary>
     /// <returns></returns>
     /// <exception cref="ArgumentException">If required more than 2 equations</exception>
-    public static double IntersectingTwoPointsСircles(int i, double[] x)
+    public static double Intersect2PointCircle(int i, double[] x)
     {
         return i switch
         {
@@ -61,7 +61,7 @@ public static class Function
     /// </summary>
     /// <returns></returns>
     /// <exception cref="ArgumentException">If required more than 3 equations</exception>
-    public static double IntersectingOnePointСirclesWithLine(int i, double[] x)
+    public static double Intersect1PointCircleLine(int i, double[] x)
     {
         return i switch
         {
@@ -80,7 +80,7 @@ public static class Function
     /// </summary>
     /// <returns></returns>
     /// <exception cref="ArgumentException">If required more than 3 equations</exception>
-    public static double ThreeIntersectingLines(int i, double[] x)
+    public static double Intersect3Line(int i, double[] x)
     {
         return i switch
         {
@@ -89,185 +89,5 @@ public static class Function
             2 => x[1] + x[0] - 5,
             _ => throw new ArgumentException($"No such index ({i}) exist")
         };
-    }
-
-    /// <summary>
-    /// Numerical derivative of i-th function that given upper
-    /// </summary>
-    /// <returns>Value of numerical derivative at given x point</returns>
-    /// <exception cref="ArgumentException">If given invalid function</exception>
-    /// <exception cref="Exception">If switch doesn't work properly</exception>
-    public static double NumericalDerivative(string functionName, double[] x, int i)
-    {
-        switch (i)
-        {
-            case 0:
-                switch (functionName)
-                {
-                    case "IntersectingOnePointСircles":
-
-                        break;
-
-                    case "IntersectingTwoPointsСircles":
-
-                        break;
-
-                    case "IntersectingNoPointsСircles":
-
-                        break;
-
-                    case "IntersectingOnePointСirclesWithLine":
-
-                        break;
-
-                    case "ThreeIntersectingLines":
-
-                        break;
-
-                    default:
-                        throw new ArgumentException($"No such function as {functionName} exist.");
-                }
-
-                break;
-
-            case 1:
-                switch (functionName)
-                {
-                    case "IntersectingOnePointСircles":
-
-                        break;
-
-                    case "IntersectingTwoPointsСircles":
-
-                        break;
-
-                    case "IntersectingNoPointsСircles":
-
-                        break;
-
-                    case "IntersectingOnePointСirclesWithLine":
-
-                        break;
-
-                    case "ThreeIntersectingLines":
-
-                        break;
-
-                    default:
-                        throw new ArgumentException($"No such function as {functionName} exist.");
-                }
-
-                break;
-
-            case 2:
-                switch (functionName)
-                {
-                    case "IntersectingOnePointСirclesWithLine":
-
-                        break;
-
-                    case "ThreeIntersectingLines":
-
-                        break;
-
-                    default:
-                        throw new ArgumentException($"No such function as {functionName} exist.");
-                }
-
-                break;
-            default:
-                throw new ArgumentException($"No such index ({i}) exist.");
-        }
-
-        throw new Exception($"Numerical derivative is broken");
-    }
-
-    /// <summary>
-    /// Analytic derivative of i-th function that given upper
-    /// </summary>
-    /// <returns>Value of analytic derivative at given x point</returns>
-    /// <exception cref="ArgumentException">If given invalid function</exception>
-    /// <exception cref="Exception">If switch doesn't work properly</exception>
-    public static double AnalyticDerivative(string functionName, double[] x, int i)
-    {
-        switch (i)
-        {
-            case 0:
-                switch (functionName)
-                {
-                    case "IntersectingOnePointСircles":
-
-                        break;
-
-                    case "IntersectingTwoPointsСircles":
-
-                        break;
-
-                    case "IntersectingNoPointsСircles":
-
-                        break;
-
-                    case "IntersectingOnePointСirclesWithLine":
-
-                        break;
-
-                    case "ThreeIntersectingLines":
-
-                        break;
-
-                    default:
-                        throw new ArgumentException($"No such function as {functionName} exist.");
-                }
-
-                break;
-            case 1:
-                switch (functionName)
-                {
-                    case "IntersectingOnePointСircles":
-
-                        break;
-
-                    case "IntersectingTwoPointsСircles":
-
-                        break;
-
-                    case "IntersectingNoPointsСircles":
-
-                        break;
-
-                    case "IntersectingOnePointСirclesWithLine":
-
-                        break;
-
-                    case "ThreeIntersectingLines":
-
-                        break;
-
-                    default:
-                        throw new ArgumentException($"No such function as {functionName} exist.");
-                }
-
-                break;
-            case 2:
-                switch (functionName)
-                {
-                    case "IntersectingOnePointСirclesWithLine":
-
-                        break;
-
-                    case "ThreeIntersectingLines":
-
-                        break;
-
-                    default:
-                        throw new ArgumentException($"No such function as {functionName} exist.");
-                }
-
-                break;
-            default:
-                throw new ArgumentException($"No such index ({i}) exist.");
-        }
-
-        throw new Exception($"Analytical derivative is broken");
     }
 }
