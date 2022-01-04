@@ -48,11 +48,11 @@ public class SONLE
         return x;
     }
                           
-    private static double[] CalcFSLAE(string testName, double[] initApprox)
+    private static double[] CalcFSLAE(string systemName, double[] initApprox)
     {
         var f = new double[initApprox.Length];
 
-        switch (testName)
+        switch (systemName)
         {
             case "Intersect1PointCircle":
                 FunctionsNumber = 2;
@@ -112,7 +112,7 @@ public class SONLE
                 break;
 
             default:
-                throw new ArgumentException("No such testName exist.");
+                throw new ArgumentException("No such systemName exist.");
         }
 
         for (var i = 0; i < FunctionsNumber; i++)
@@ -123,11 +123,11 @@ public class SONLE
         return f;
     }
 
-    private static double[] CalcF(string testName, double[] initApprox)
+    private static double[] CalcF(string systemName, double[] initApprox)
     {
         var f = new double[initApprox.Length];
 
-        switch (testName)
+        switch (systemName)
         {
             case "Intersect1PointCircle":
                 FunctionsNumber = 2;
@@ -187,13 +187,13 @@ public class SONLE
                 break;
 
             default:
-                throw new ArgumentException("No such testName exist.");
+                throw new ArgumentException("No such systemName exist.");
         }
 
         return f;
     }
 
-    private static double[,] CalcJacobi(string testName, double[] initApprox, string mode)
+    private static double[,] CalcJacobi(string systemName, double[] initApprox, string mode)
     {
         var jacobi = new double[initApprox.Length, initApprox.Length];
 
@@ -208,7 +208,7 @@ public class SONLE
         {
             for (var j = 0; j < VariablesNumber; j++)
             {
-                jacobi[i, j] = derivative(testName, initApprox, i, j);
+                jacobi[i, j] = derivative(systemName, initApprox, i, j);
             }
         }                
 

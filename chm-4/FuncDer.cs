@@ -9,7 +9,7 @@ public static class FuncDer
     /// </summary>
     /// <returns>Value of numerical derivative at given args point</returns>
     /// <exception cref="ArgumentException">If given invalid function</exception>
-    public static double CalcNumerical(string functionName, double[] args, int i, int j)
+    public static double CalcNumerical(string systemName, double[] args, int i, int j)
     {
         const double h = 1e-7;
 
@@ -19,29 +19,29 @@ public static class FuncDer
         
         return i switch
         {
-            0 => functionName switch
+            0 => systemName switch
             {
                 "Intersect1PointCircle" => (Intersect1PointCircle(i, argsPlusH) - Intersect1PointCircle(i, args)) / h,
                 "Intersect2PointCircle" => (Intersect2PointCircle(i, argsPlusH) - Intersect2PointCircle(i, args)) / h,
                 "Intersect0PointCircle" => (Intersect0PointCircle(i, argsPlusH) - Intersect0PointCircle(i, args)) / h,
                 "Intersect1PointCircleLine" => (Intersect1PointCircleLine(i, argsPlusH) - Intersect1PointCircleLine(i, args)) / h,
                 "Intersect3Line" => (Intersect3Line(i, argsPlusH) - Intersect3Line(i, args)) / h,
-                _ => throw new ArgumentException($"No such function as {functionName} exist.")
+                _ => throw new ArgumentException($"No such function as {systemName} exist.")
             },
-            1 => functionName switch
+            1 => systemName switch
             {
                 "Intersect1PointCircle" => (Intersect1PointCircle(i, argsPlusH) - Intersect1PointCircle(i, args)) / h,
                 "Intersect2PointCircle" => (Intersect2PointCircle(i, argsPlusH) - Intersect2PointCircle(i, args)) / h,
                 "Intersect0PointCircle" => (Intersect0PointCircle(i, argsPlusH) - Intersect0PointCircle(i, args)) / h,
                 "Intersect1PointCircleLine" => (Intersect1PointCircleLine(i, argsPlusH) - Intersect1PointCircleLine(i, args)) / h,
                 "Intersect3Line" => (Intersect3Line(i, argsPlusH) - Intersect3Line(i, args)) / h,
-                _ => throw new ArgumentException($"No such function as {functionName} exist.")
+                _ => throw new ArgumentException($"No such function as {systemName} exist.")
             },
-            2 => functionName switch
+            2 => systemName switch
             {
                 "Intersect1PointCircleLine" => (Intersect1PointCircleLine(i, argsPlusH) - Intersect1PointCircleLine(i, args)) / h,
                 "Intersect3Line" => (Intersect3Line(i, argsPlusH) - Intersect3Line(i, args)) / h,
-                _ => throw new ArgumentException($"No such function as {functionName} exist.")
+                _ => throw new ArgumentException($"No such function as {systemName} exist.")
             },
             _ => throw new ArgumentException($"No such index ({i}) exist.")
         };
@@ -98,9 +98,9 @@ public static class FuncDer
                     case 1:
                         return systemName switch
                         {
-                            "Intersect1PointCircle" => 1,
-                            "Intersect2PointCircle" => 2,
-                            "Intersect0PointCircle" => 3,
+                            "Intersect1PointCircle" => 2 * args[1],
+                            "Intersect2PointCircle" => 2 * args[1],
+                            "Intersect0PointCircle" => 2 * args[1],
                             "Intersect1PointCircleLine" => 2 * args[1],
                             "Intersect3Line" => 1.0,
                             _ => throw new ArgumentException($"No such function as {systemName} exist.")
