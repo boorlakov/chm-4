@@ -9,15 +9,15 @@ namespace chm_4;
 public static class SONLE
 {
     /// <summary>
-    ///     Solves system of non-linear equations with Newton's method
+    /// Solves system of non-linear equations with Newton's method
     /// </summary>
     /// <param name="systemName">
-    ///     Switching in system names, valid names is:
-    ///     "Intersect1PointCircle",
-    ///     "Intersect2PointCircle",
-    ///     "Intersect0PointCircle",
-    ///     "Intersect1PointCircleLine",
-    ///     "Intersect3Line"
+    /// Switching in system names, valid names is:
+    /// "Intersect1PointCircle",
+    /// "Intersect2PointCircle",
+    /// "Intersect0PointCircle",
+    /// "Intersect1PointCircleLine",
+    /// "Intersect3Line"
     /// </param>
     /// <param name="funcsNum">Number of functions in system</param>
     /// <param name="varsNum">Number of variables in system</param>
