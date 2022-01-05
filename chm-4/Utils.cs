@@ -44,12 +44,12 @@ public static class Utils
 
     public static void ShowStats(int iter, double beta, double[] x, double normF)
     {
-        var sb = new StringBuilder($"\r[INFO] iter: {iter}; beta: {beta}; x: [ ");
+        var sb = new StringBuilder($"\r[INFO] iter: {iter}; beta: {beta:G7}; args: [ ");
         foreach (var item in x)
         {
-            sb.Append($"{item:G15} ");
+            sb.Append($"{item:G7} ");
         }
-        sb.Append($"]; ||F||: {normF}");
+        sb.Append($"]; ||F||: {normF:G7};                              ");
         Console.Write(sb.ToString());
     }
 }

@@ -7,14 +7,20 @@ internal static class Program
     public static void Main(string[] args)
     {
         var content = File.ReadAllText("params.json");
-        var parameters = JsonSerializer.Deserialize<ParamsModel>(content);
+        var inputParameters = JsonSerializer.Deserialize<ParamsModel>(content);
+
+        var sonleParameters = new SONLEParams(2, 2, "Intersect2PointCircle");
+
         var solution = SONLE.Solve(
-            "Intersect1PointCircle", 
-            parameters!.InitApprox, 
-            parameters.Mode,
-            parameters.MaxIter,
-            parameters.Eps1,
-            parameters.Eps2);
+            sonleParameters.SystemName,
+            sonleParameters.FuncsNum,
+            sonleParameters.VarsNum,
+            inputParameters!.InitApprox, 
+            inputParameters.Mode,
+            inputParameters.MaxIter,
+            inputParameters.Eps1,
+            inputParameters.Eps2
+        );
 
         Utils.ExportToFile("solution.txt", solution);
     }

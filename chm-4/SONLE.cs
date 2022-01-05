@@ -1,25 +1,26 @@
+using chm_4.LinAlg;
 using static chm_4.LinAlg.GeneralOperations;
 
 namespace chm_4;
 
 /// <summary>
-/// System of non-linear equations
+///     System of non-linear equations
 /// </summary>
 public static class SONLE
 {
-    private static int FuncsNum { get; set; }
-    private static int VarsNum { get; set; }
-
     /// <summary>
-    /// Solves system of non-linear equations with Newton's method
+    ///     Solves system of non-linear equations with Newton's method
     /// </summary>
-    /// <param name="systemName"> Switching in system names, valid names is:
+    /// <param name="systemName">
+    ///     Switching in system names, valid names is:
     ///     "Intersect1PointCircle",
     ///     "Intersect2PointCircle",
     ///     "Intersect0PointCircle",
     ///     "Intersect1PointCircleLine",
     ///     "Intersect3Line".
     /// </param>
+    /// <param name="funcsNum">Number of functions in system</param>
+    /// <param name="varsNum">Number of variables in system</param>
     /// <param name="initApprox"> Initial approximation. </param>
     /// <param name="mode">Mode of differentiation (Analytical / Numerical).</param>
     /// <param name="maxIter">parameter for exiting by iteration expiration.</param>
@@ -29,6 +30,8 @@ public static class SONLE
     /// <exception cref="ArgumentException"> If passes invalid test name. </exception>
     public static double[] Solve(
         string systemName,
+        int funcsNum,
+        int varsNum,
         double[] initApprox,
         string mode,
         int maxIter,
@@ -36,54 +39,55 @@ public static class SONLE
         double eps2
     )
     {
-        var jacobian = EvalJacobian(systemName, initApprox, mode);
-        var f = EvalFuncsToSLAE(systemName, initApprox);
-        
+        var jacobian = EvalJacobian(systemName, initApprox, mode, funcsNum, varsNum);
+        var f = EvalFuncsToSLAE(systemName, initApprox, funcsNum);
+
         var normF0 = Norm(f);
 
-        var dx = LinAlg.Gauss.Solve(jacobian, f);
-        
+        var dArgs = Gauss.Solve(jacobian, f);
+
         var beta = 1.0;
-        
-        var x = new double[initApprox.Length];
-        for (var i = 0; i < x.Length; i++)
+
+        var args = new double[initApprox.Length];
+
+        for (var i = 0; i < args.Length; i++)
         {
-            x[i] += beta * dx[i];
+            args[i] += beta * dArgs[i];
         }
 
-        var fNew = EvalFunc(systemName, x);
-        Utils.ShowStats(0, beta, x, Norm(fNew));
+        var fNew = EvalFunc(systemName, args, funcsNum);
+        Utils.ShowStats(0, beta, args, Norm(fNew));
 
         for (var iter = 1; iter < maxIter && beta > eps1 && Norm(fNew) / normF0 > eps2; iter++)
         {
-            if (Norm(fNew) < Norm(f))
+            if (Norm(fNew) > Norm(f))
             {
                 beta /= 2.0;
             }
 
-            jacobian = EvalJacobian(systemName, x, mode);
-            f = EvalFuncsToSLAE(systemName, x);
+            jacobian = EvalJacobian(systemName, args, mode, funcsNum, varsNum);
+            f = EvalFuncsToSLAE(systemName, args, funcsNum);
 
-            dx = LinAlg.Gauss.Solve(jacobian, f);
+            dArgs = Gauss.Solve(jacobian, f);
 
-            for (var i = 0; i < x.Length; i++)
+            for (var i = 0; i < args.Length; i++)
             {
-                x[i] += beta * dx[i];
+                args[i] += beta * dArgs[i];
             }
 
-            fNew = EvalFunc(systemName, x);
+            fNew = EvalFunc(systemName, args, funcsNum);
 
-            Utils.ShowStats(iter, beta, x, Norm(fNew));
+            Utils.ShowStats(iter, beta, args, Norm(fNew));
         }
 
-        return x;
+        return args;
     }
 
-    private static double[] EvalFuncsToSLAE(string systemName, double[] initApprox)
+    private static double[] EvalFuncsToSLAE(string systemName, double[] x, int funcsNum)
     {
-        var f = EvalFunc(systemName, initApprox);
+        var f = EvalFunc(systemName, x, funcsNum);
 
-        for (var i = 0; i < FuncsNum; i++)
+        for (var i = 0; i < funcsNum; i++)
         {
             f[i] *= -1;
         }
@@ -91,65 +95,50 @@ public static class SONLE
         return f;
     }
 
-    private static double[] EvalFunc(string systemName, double[] initApprox)
+    private static double[] EvalFunc(string systemName, double[] args, int funcsNum)
     {
-        var f = new double[initApprox.Length];
+        var f = new double[args.Length];
 
         switch (systemName)
         {
             case "Intersect1PointCircle":
-                FuncsNum = 2;
-                VarsNum = 2;
-
-                for (var i = 0; i < FuncsNum; i++)
+                for (var i = 0; i < funcsNum; i++)
                 {
-                    f[i] = Function.Intersect1PointCircle(i, initApprox);
+                    f[i] = Function.Intersect1PointCircle(i, args);
                 }
 
                 break;
 
             case "Intersect2PointCircle":
-                FuncsNum = 2;
-                VarsNum = 2;
-
-                for (var i = 0; i < FuncsNum; i++)
+                for (var i = 0; i < funcsNum; i++)
                 {
-                    f[i] = Function.Intersect2PointCircle(i, initApprox);
+                    f[i] = Function.Intersect2PointCircle(i, args);
                 }
 
                 break;
 
 
             case "Intersect0PointCircle":
-                FuncsNum = 2;
-                VarsNum = 2;
-
-                for (var i = 0; i < FuncsNum; i++)
+                for (var i = 0; i < funcsNum; i++)
                 {
-                    f[i] = Function.Intersect0PointCircle(i, initApprox);
+                    f[i] = Function.Intersect0PointCircle(i, args);
                 }
 
                 break;
 
 
             case "Intersect1PointCircleLine":
-                FuncsNum = 3;
-                VarsNum = 2;
-
-                for (var i = 0; i < FuncsNum; i++)
+                for (var i = 0; i < funcsNum; i++)
                 {
-                    f[i] = Function.Intersect1PointCircleLine(i, initApprox);
+                    f[i] = Function.Intersect1PointCircleLine(i, args);
                 }
 
                 break;
 
             case "Intersect3Line":
-                FuncsNum = 3;
-                VarsNum = 2;
-
-                for (var i = 0; i < FuncsNum; i++)
+                for (var i = 0; i < funcsNum; i++)
                 {
-                    f[i] = Function.Intersect3Line(i, initApprox);
+                    f[i] = Function.Intersect3Line(i, args);
                 }
 
                 break;
@@ -161,9 +150,15 @@ public static class SONLE
         return f;
     }
 
-    private static double[,] EvalJacobian(string systemName, double[] initApprox, string mode)
+    private static double[,] EvalJacobian(
+        string systemName,
+        double[] args,
+        string mode,
+        int funcsNum,
+        int varsNum
+    )
     {
-        var jacobian = new double[initApprox.Length, initApprox.Length];
+        var jacobian = new double[args.Length, args.Length];
 
         var evalDerivative = FuncDer.EvalAnalytic;
 
@@ -172,13 +167,13 @@ public static class SONLE
             evalDerivative = FuncDer.EvalNumerical;
         }
 
-        for (var i = 0; i < FuncsNum; i++)
+        for (var i = 0; i < funcsNum; i++)
         {
-            for (var j = 0; j < VarsNum; j++)
+            for (var j = 0; j < varsNum; j++)
             {
-                jacobian[i, j] = evalDerivative(systemName, initApprox, i, j);
+                jacobian[i, j] = evalDerivative(systemName, args, i, j);
             }
-        }                
+        }
 
         return jacobian;
     }
