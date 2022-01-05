@@ -55,6 +55,7 @@ public class SONLE
         }
 
         var fNew = EvalFunc(systemName, x);
+        Utils.ShowStats(0, beta, x, Norm(fNew));
 
         for (var iter = 1; iter < maxIter && beta > eps1 && Norm(fNew) / normF0 > eps2; iter++)
         {
@@ -74,6 +75,8 @@ public class SONLE
             }
 
             fNew = EvalFunc(systemName, x);
+
+            Utils.ShowStats(iter, beta, x, Norm(fNew));
         }
 
         return x;

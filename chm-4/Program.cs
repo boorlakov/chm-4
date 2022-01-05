@@ -15,5 +15,7 @@ internal static class Program
             parameters.MaxIter,
             parameters.Eps1,
             parameters.Eps2);
+
+        Utils.ExportToFile("solution.txt", solution);
     }
 } 

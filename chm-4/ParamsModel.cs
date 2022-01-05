@@ -1,3 +1,4 @@
+#pragma warning disable CS8618
 namespace chm_4;
 
 public class ParamsModel

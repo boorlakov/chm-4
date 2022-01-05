@@ -6,12 +6,14 @@ public static class Utils
 {
 
     /// <summary>
-    /// Exports double static array to already opened file
+    /// Exports double static array to file
     /// </summary>
-    /// <param name="outputFile">File, where exported</param>
+    /// <param name="outputFileName">FileName, where exported</param>
     /// <param name="vectorX">Array to export</param>
-    public static void ExportToFile(StreamWriter outputFile, double[] vectorX)
+    public static void ExportToFile(string outputFileName, double[] vectorX)
     {
+        using var outputFile = new StreamWriter(outputFileName);
+        
         var sb = new StringBuilder();
 
         foreach (var item in vectorX)
@@ -38,5 +40,16 @@ public static class Utils
         }
 
         Console.WriteLine();
+    }
+
+    public static void ShowStats(int iter, double beta, double[] x, double normF)
+    {
+        var sb = new StringBuilder($"\r[INFO] iter: {iter}; beta: {beta}; x: [ ");
+        foreach (var item in x)
+        {
+            sb.Append($"{item:G15} ");
+        }
+        sb.Append($"]; ||F||: {normF}");
+        Console.Write(sb.ToString());
     }
 }
