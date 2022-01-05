@@ -1,14 +1,11 @@
-using System.Diagnostics.CodeAnalysis;
 using static chm_4.LinAlg.GeneralOperations;
-// ReSharper disable ReturnTypeCanBeEnumerable.Global
 
 namespace chm_4;
 
 /// <summary>
 /// System of non-linear equations
 /// </summary>
-[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
-public class SONLE
+public static class SONLE
 {
     private static int FuncsNum { get; set; }
     private static int VarsNum { get; set; }
