@@ -10,8 +10,8 @@ namespace chm_4;
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class SONLE
 {
-    private static int FunctionsNumber { get; set; }
-    private static int VariablesNumber { get; set; }
+    private static int FuncsNum { get; set; }
+    private static int VarsNum { get; set; }
 
     /// <summary>
     /// Solves system of non-linear equations with Newton's method
@@ -86,7 +86,7 @@ public class SONLE
     {
         var f = EvalFunc(systemName, initApprox);
 
-        for (var i = 0; i < FunctionsNumber; i++)
+        for (var i = 0; i < FuncsNum; i++)
         {
             f[i] *= -1;
         }
@@ -101,10 +101,10 @@ public class SONLE
         switch (systemName)
         {
             case "Intersect1PointCircle":
-                FunctionsNumber = 2;
-                VariablesNumber = 2;
+                FuncsNum = 2;
+                VarsNum = 2;
 
-                for (var i = 0; i < FunctionsNumber; i++)
+                for (var i = 0; i < FuncsNum; i++)
                 {
                     f[i] = Function.Intersect1PointCircle(i, initApprox);
                 }
@@ -112,10 +112,10 @@ public class SONLE
                 break;
 
             case "Intersect2PointCircle":
-                FunctionsNumber = 2;
-                VariablesNumber = 2;
+                FuncsNum = 2;
+                VarsNum = 2;
 
-                for (var i = 0; i < FunctionsNumber; i++)
+                for (var i = 0; i < FuncsNum; i++)
                 {
                     f[i] = Function.Intersect2PointCircle(i, initApprox);
                 }
@@ -124,10 +124,10 @@ public class SONLE
 
 
             case "Intersect0PointCircle":
-                FunctionsNumber = 2;
-                VariablesNumber = 2;
+                FuncsNum = 2;
+                VarsNum = 2;
 
-                for (var i = 0; i < FunctionsNumber; i++)
+                for (var i = 0; i < FuncsNum; i++)
                 {
                     f[i] = Function.Intersect0PointCircle(i, initApprox);
                 }
@@ -136,10 +136,10 @@ public class SONLE
 
 
             case "Intersect1PointCircleLine":
-                FunctionsNumber = 3;
-                VariablesNumber = 2;
+                FuncsNum = 3;
+                VarsNum = 2;
 
-                for (var i = 0; i < FunctionsNumber; i++)
+                for (var i = 0; i < FuncsNum; i++)
                 {
                     f[i] = Function.Intersect1PointCircleLine(i, initApprox);
                 }
@@ -147,10 +147,10 @@ public class SONLE
                 break;
 
             case "Intersect3Line":
-                FunctionsNumber = 3;
-                VariablesNumber = 2;
+                FuncsNum = 3;
+                VarsNum = 2;
 
-                for (var i = 0; i < FunctionsNumber; i++)
+                for (var i = 0; i < FuncsNum; i++)
                 {
                     f[i] = Function.Intersect3Line(i, initApprox);
                 }
@@ -175,9 +175,9 @@ public class SONLE
             evalDerivative = FuncDer.EvalNumerical;
         }
 
-        for (var i = 0; i < FunctionsNumber; i++)
+        for (var i = 0; i < FuncsNum; i++)
         {
-            for (var j = 0; j < VariablesNumber; j++)
+            for (var j = 0; j < VarsNum; j++)
             {
                 jacobian[i, j] = evalDerivative(systemName, initApprox, i, j);
             }
