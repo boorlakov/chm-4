@@ -55,7 +55,7 @@ public static class SONLE
             args[i] += beta * dArgs[i];
         }
 
-        var fNew = EvalFunc(systemName, args, funcsNum);
+        var fNew = EvalFuncs(systemName, args, funcsNum);
         Utils.ShowStats(0, beta, args, Norm(fNew));
 
         for (var iter = 1; iter < maxIter && beta > eps1 && Norm(fNew) / normF0 > eps2; iter++)
@@ -75,7 +75,7 @@ public static class SONLE
                 args[i] += beta * dArgs[i];
             }
 
-            fNew = EvalFunc(systemName, args, funcsNum);
+            fNew = EvalFuncs(systemName, args, funcsNum);
 
             Utils.ShowStats(iter, beta, args, Norm(fNew));
         }
@@ -85,7 +85,7 @@ public static class SONLE
 
     private static double[] EvalFuncsToSLAE(string systemName, double[] x, int funcsNum)
     {
-        var f = EvalFunc(systemName, x, funcsNum);
+        var f = EvalFuncs(systemName, x, funcsNum);
 
         for (var i = 0; i < funcsNum; i++)
         {
@@ -95,7 +95,7 @@ public static class SONLE
         return f;
     }
 
-    private static double[] EvalFunc(string systemName, double[] args, int funcsNum)
+    private static double[] EvalFuncs(string systemName, double[] args, int funcsNum)
     {
         var f = new double[args.Length];
 
@@ -158,7 +158,8 @@ public static class SONLE
         int varsNum
     )
     {
-        var jacobian = new double[args.Length, args.Length];
+        var jacobianTrial = new double[varsNum, funcsNum];
+        var f = EvalFuncs(systemName, args, funcsNum);
 
         var evalDerivative = FuncDer.EvalAnalytic;
 
@@ -171,10 +172,39 @@ public static class SONLE
         {
             for (var j = 0; j < varsNum; j++)
             {
-                jacobian[i, j] = evalDerivative(systemName, args, i, j);
+                jacobianTrial[i, j] = evalDerivative(systemName, args, i, j);
             }
         }
 
-        return jacobian;
+        if (varsNum == funcsNum)
+        {
+            return jacobianTrial;
+        }
+        else
+        {
+            var jacobian = new double[args.Length, args.Length];
+            var maxI = 0;
+            var maxIVal = Math.Abs(f[0]);
+
+            for (var i = 0; i < funcsNum; i++)
+            {
+                if (maxIVal < Math.Abs(f[i]))
+                {
+                    maxIVal = Math.Abs(f[i]);
+                    maxI = i;
+                }
+            }
+
+            for (var i = 0; i < funcsNum; i++)
+            {
+                if (i == maxI)
+                {
+                    continue;
+                }
+
+                // TODO: Add elimination
+            }
+        }
+
     }
 }
