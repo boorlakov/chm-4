@@ -104,7 +104,7 @@ public static class SONLE
             case "Intersect1PointCircle":
                 for (var i = 0; i < funcsNum; i++)
                 {
-                    f[i] = Function.Intersect1PointCircle(i, args);
+                    f[i] = SOE.Intersect1PointCircle(i, args);
                 }
 
                 break;
@@ -112,7 +112,7 @@ public static class SONLE
             case "Intersect2PointCircle":
                 for (var i = 0; i < funcsNum; i++)
                 {
-                    f[i] = Function.Intersect2PointCircle(i, args);
+                    f[i] = SOE.Intersect2PointCircle(i, args);
                 }
 
                 break;
@@ -121,7 +121,7 @@ public static class SONLE
             case "Intersect0PointCircle":
                 for (var i = 0; i < funcsNum; i++)
                 {
-                    f[i] = Function.Intersect0PointCircle(i, args);
+                    f[i] = SOE.Intersect0PointCircle(i, args);
                 }
 
                 break;
@@ -130,7 +130,7 @@ public static class SONLE
             case "Intersect1PointCircleLine":
                 for (var i = 0; i < funcsNum; i++)
                 {
-                    f[i] = Function.Intersect1PointCircleLine(i, args);
+                    f[i] = SOE.Intersect1PointCircleLine(i, args);
                 }
 
                 break;
@@ -138,7 +138,7 @@ public static class SONLE
             case "Intersect3Line":
                 for (var i = 0; i < funcsNum; i++)
                 {
-                    f[i] = Function.Intersect3Line(i, args);
+                    f[i] = SOE.Intersect3Line(i, args);
                 }
 
                 break;

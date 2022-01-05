@@ -1,6 +1,6 @@
 namespace chm_4;
 
-public static class Function
+public static class SOE
 {
     /// <summary>
     /// SOE kind of

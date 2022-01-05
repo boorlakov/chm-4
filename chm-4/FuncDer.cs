@@ -1,4 +1,4 @@
-using static chm_4.Function;
+using static chm_4.SOE;
 
 namespace chm_4;
 
