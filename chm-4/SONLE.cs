@@ -17,16 +17,16 @@ public static class SONLE
     ///     "Intersect2PointCircle",
     ///     "Intersect0PointCircle",
     ///     "Intersect1PointCircleLine",
-    ///     "Intersect3Line".
+    ///     "Intersect3Line"
     /// </param>
     /// <param name="funcsNum">Number of functions in system</param>
     /// <param name="varsNum">Number of variables in system</param>
-    /// <param name="initApprox"> Initial approximation. </param>
-    /// <param name="mode">Mode of differentiation (Analytical / Numerical).</param>
-    /// <param name="maxIter">parameter for exiting by iteration expiration.</param>
-    /// <param name="eps1">parameter for exiting by beta.</param>
-    /// <param name="eps2">parameter for exiting by ||F_k|| / ||F_0||.</param>
-    /// <returns> Solution vector. </returns>
+    /// <param name="initApprox">Initial approximation</param>
+    /// <param name="mode">Mode of differentiation (Analytical / Numerical)</param>
+    /// <param name="maxIter">parameter for exiting by iteration expiration</param>
+    /// <param name="eps1">parameter for exiting by beta</param>
+    /// <param name="eps2">parameter for exiting by ||F_k|| / ||F_0||</param>
+    /// <returns>Solution vector</returns>
     /// <exception cref="ArgumentException"> If passes invalid test name. </exception>
     public static double[] Solve(
         string systemName,
