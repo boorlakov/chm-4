@@ -5,54 +5,35 @@ namespace chm_4;
 public static class FuncDer
 {
     /// <summary>
-    /// Numerical derivative of functionNum-th function that given upper
+    /// Partial numerical derivative of i-th function by j-th argument
     /// </summary>
     /// <returns>Value of numerical derivative at given args point</returns>
     /// <exception cref="ArgumentException">If given invalid function</exception>
-    public static double CalcNumerical(string systemName, double[] args, int i, int j)
+    public static double EvalNumerical(string systemName, double[] args, int i, int j)
     {
         const double h = 1e-7;
 
         var argsPlusH = new double[args.Length];
         args.AsSpan().CopyTo(argsPlusH);
         argsPlusH[j] += h;
-        
-        return i switch
+
+        return systemName switch
         {
-            0 => systemName switch
-            {
-                "Intersect1PointCircle" => (Intersect1PointCircle(i, argsPlusH) - Intersect1PointCircle(i, args)) / h,
-                "Intersect2PointCircle" => (Intersect2PointCircle(i, argsPlusH) - Intersect2PointCircle(i, args)) / h,
-                "Intersect0PointCircle" => (Intersect0PointCircle(i, argsPlusH) - Intersect0PointCircle(i, args)) / h,
-                "Intersect1PointCircleLine" => (Intersect1PointCircleLine(i, argsPlusH) - Intersect1PointCircleLine(i, args)) / h,
-                "Intersect3Line" => (Intersect3Line(i, argsPlusH) - Intersect3Line(i, args)) / h,
-                _ => throw new ArgumentException($"No such function as {systemName} exist.")
-            },
-            1 => systemName switch
-            {
-                "Intersect1PointCircle" => (Intersect1PointCircle(i, argsPlusH) - Intersect1PointCircle(i, args)) / h,
-                "Intersect2PointCircle" => (Intersect2PointCircle(i, argsPlusH) - Intersect2PointCircle(i, args)) / h,
-                "Intersect0PointCircle" => (Intersect0PointCircle(i, argsPlusH) - Intersect0PointCircle(i, args)) / h,
-                "Intersect1PointCircleLine" => (Intersect1PointCircleLine(i, argsPlusH) - Intersect1PointCircleLine(i, args)) / h,
-                "Intersect3Line" => (Intersect3Line(i, argsPlusH) - Intersect3Line(i, args)) / h,
-                _ => throw new ArgumentException($"No such function as {systemName} exist.")
-            },
-            2 => systemName switch
-            {
-                "Intersect1PointCircleLine" => (Intersect1PointCircleLine(i, argsPlusH) - Intersect1PointCircleLine(i, args)) / h,
-                "Intersect3Line" => (Intersect3Line(i, argsPlusH) - Intersect3Line(i, args)) / h,
-                _ => throw new ArgumentException($"No such function as {systemName} exist.")
-            },
-            _ => throw new ArgumentException($"No such index ({i}) exist.")
+            "Intersect1PointCircle" => (Intersect1PointCircle(i, argsPlusH) - Intersect1PointCircle(i, args)) / h,
+            "Intersect2PointCircle" => (Intersect2PointCircle(i, argsPlusH) - Intersect2PointCircle(i, args)) / h,
+            "Intersect0PointCircle" => (Intersect0PointCircle(i, argsPlusH) - Intersect0PointCircle(i, args)) / h,
+            "Intersect1PointCircleLine" => (Intersect1PointCircleLine(i, argsPlusH) - Intersect1PointCircleLine(i, args)) / h,
+            "Intersect3Line" => (Intersect3Line(i, argsPlusH) - Intersect3Line(i, args)) / h,
+            _ => throw new ArgumentException($"No such function as {systemName} exist.")
         };
     }
 
     /// <summary>
-    /// Analytic derivative of function that given upper
+    /// Partial analytic derivative of i-th function by j-th argument
     /// </summary>
     /// <returns>Value of analytic derivative at given args point</returns>
     /// <exception cref="ArgumentException">If given invalid function</exception>
-    public static double CalcAnalytic(string systemName, double[] args, int functionNum, int parameterNum)
+    public static double EvalAnalytic(string systemName, double[] args, int functionNum, int parameterNum)
     {
         switch (functionNum)
         {
@@ -130,6 +111,6 @@ public static class FuncDer
                 break;
         }
 
-        throw new Exception("All died");
+        throw new Exception("[PANIC] All died");
     }
 }

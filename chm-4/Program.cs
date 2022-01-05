@@ -8,6 +8,12 @@ internal static class Program
     {
         var content = File.ReadAllText("params.json");
         var parameters = JsonSerializer.Deserialize<ParamsModel>(content);
-        var solution = SONLE.Solve("Intersect1PointCircle", parameters!.InitApprox, parameters.Mode);
+        var solution = SONLE.Solve(
+            "Intersect1PointCircle", 
+            parameters!.InitApprox, 
+            parameters.Mode,
+            parameters.MaxIter,
+            parameters.Eps1,
+            parameters.Eps2);
     }
 } 
