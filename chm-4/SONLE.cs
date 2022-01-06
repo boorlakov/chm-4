@@ -48,8 +48,8 @@ public static class SONLE
         }
         else
         {
-            jacobian = EvalJacobian(systemName, initApprox, mode, funcsNum, varsNum);
-            f = EvalFuncsToSLAE(systemName, initApprox, funcsNum);
+            jacobian = EvalJacobian(systemName, initApprox, mode, 2, 2);
+            f = EvalFuncsToSLAE(systemName, initApprox, 2);
         }
 
         var normF0 = Norm(f);
@@ -65,7 +65,7 @@ public static class SONLE
             args[i] += beta * dArgs[i];
         }
 
-        var fNew = EvalFuncs(systemName, args, funcsNum);
+        var fNew = EvalFuncs(systemName, args, 2);
         Utils.ShowStats(0, beta, args, Norm(fNew));
 
         for (var iter = 1; iter < maxIter && beta > eps1 && Norm(fNew) / normF0 > eps2; iter++)
@@ -75,8 +75,8 @@ public static class SONLE
                 beta /= 2.0;
             }
 
-            jacobian = EvalJacobian(systemName, args, mode, funcsNum, varsNum);
-            f = EvalFuncsToSLAE(systemName, args, funcsNum);
+            jacobian = EvalJacobian(systemName, args, mode, 2, 2);
+            f = EvalFuncsToSLAE(systemName, args, 2);
 
             dArgs = Gauss.Solve(jacobian, f);
 
@@ -85,7 +85,7 @@ public static class SONLE
                 args[i] += beta * dArgs[i];
             }
 
-            fNew = EvalFuncs(systemName, args, funcsNum);
+            fNew = EvalFuncs(systemName, args, 2);
 
             Utils.ShowStats(iter, beta, args, Norm(fNew));
         }
@@ -107,7 +107,7 @@ public static class SONLE
 
     private static double[] EvalFuncs(string systemName, double[] args, int funcsNum)
     {
-        var f = new double[args.Length];
+        var f = new double[funcsNum];
 
         switch (systemName)
         {

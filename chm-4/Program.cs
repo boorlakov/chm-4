@@ -9,7 +9,7 @@ internal static class Program
         var content = File.ReadAllText("params.json");
         var inputParameters = JsonSerializer.Deserialize<ParamsModel>(content);
 
-        var sonleParameters = new SONLEParams(2, 2, "Intersect2PointCircle");
+        var sonleParameters = new SONLEParams(2, 2, "Intersect0PointCircle");
 
         var solution = SONLE.Solve(
             sonleParameters.SystemName,
