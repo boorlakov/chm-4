@@ -39,8 +39,18 @@ public static class SONLE
         double eps2
     )
     {
-        var jacobian = EvalJacobian(systemName, initApprox, mode, funcsNum, varsNum);
-        var f = EvalFuncsToSLAE(systemName, initApprox, funcsNum);
+        var jacobian = new double[varsNum, varsNum];
+        var f = new double[varsNum];
+
+        if (funcsNum != varsNum)
+        {
+            (jacobian, f) = EvalConvSystem(systemName, initApprox, mode, funcsNum, varsNum);
+        }
+        else
+        {
+            jacobian = EvalJacobian(systemName, initApprox, mode, funcsNum, varsNum);
+            f = EvalFuncsToSLAE(systemName, initApprox, funcsNum);
+        }
 
         var normF0 = Norm(f);
 
@@ -95,7 +105,7 @@ public static class SONLE
         return f;
     }
 
-    private static double[] EvalFuncs(string systemName, double[] args, int funcsNum, int varsNum)
+    private static double[] EvalFuncs(string systemName, double[] args, int funcsNum)
     {
         var f = new double[args.Length];
 
@@ -257,6 +267,31 @@ public static class SONLE
         }
 
         return EvalConvJacobian(systemName, args, maxI);
+    }
+
+    private static (double[,], double[]) EvalConvSystem(
+        string systemName,
+        double[] args,
+        string mode,
+        int funcsNum,
+        int varsNum
+    )
+    {
+        var f = EvalFuncs(systemName, args, funcsNum);
+
+        var maxI = 0;
+        var maxIVal = Math.Abs(f[0]);
+
+        for (var i = 0; i < funcsNum; i++)
+        {
+            if (maxIVal < Math.Abs(f[i]))
+            {
+                maxIVal = Math.Abs(f[i]);
+                maxI = i;
+            }
+        }
+
+        return (EvalConvJacobian(systemName, args, maxI), EvalConvFunc(systemName, args, maxI));
     }
 
     private static double[,] EvalConvJacobian(
