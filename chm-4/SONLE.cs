@@ -95,7 +95,7 @@ public static class SONLE
         return f;
     }
 
-    private static double[] EvalFuncs(string systemName, double[] args, int funcsNum)
+    private static double[] EvalFuncs(string systemName, double[] args, int funcsNum, int varsNum)
     {
         var f = new double[args.Length];
 
@@ -150,6 +150,69 @@ public static class SONLE
         return f;
     }
 
+    private static double[] EvalConvFunc(
+        string systemName,
+        double[] args,
+        int i
+    )
+    {
+        return i switch
+        {
+            0 => systemName switch
+            {
+                "Intersect1PointCircleLine" => new[] 
+                {
+                    args[0] * args[0] + args[1] * args[1] - 25,
+                    ((args[0] - 10) * (args[0] - 10) + args[1] * args[1] - 25) * 
+                    ((args[0] - 10) * (args[0] - 10) + args[1] * args[1] - 25) + (args[0] - args[1] + 5) * (args[0] - args[1] + 5)
+                },
+
+                "Intersect3Line" => new[]
+                {
+                    args[1] - args[0] + 5,
+                    (args[1] + args[0] - 5) * (args[1] + args[0] - 5) + (args[1] - 2 * args[0] - 5) * (args[1] - 2 * args[0] - 5)
+                },
+
+                _ => throw new ArgumentOutOfRangeException(nameof(systemName), systemName, null)
+            },
+            1 => systemName switch
+            {
+                "Intersect1PointCircleLine" => new[]
+                {
+                    (args[0] - 10) * (args[0] - 10) + args[1] * args[1] - 25,
+                    (args[0] * args[0] + args[1] * args[1] - 25) * 
+                    (args[0] * args[0] + args[1] * args[1] - 25) + (args[0] - args[1] + 5) * (args[0] - args[1] + 5)
+                },
+
+                "Intersect3Line" => new[]
+                {
+                    args[1] - 2 * args[0] - 5,
+                    (args[1] - args[0] + 5) * (args[1] - args[0] + 5) + (args[1] + args[0] - 5) * (args[1] + args[0] - 5)
+                },
+
+                _ => throw new ArgumentOutOfRangeException(nameof(systemName), systemName, null)
+            },
+            2 => systemName switch
+            {
+                "Intersect1PointCircleLine" => new[]
+                {
+                    (args[0] * args[0] + args[1] * args[1] - 25) * (args[0] * args[0] + args[1] * args[1] - 25) +
+                    ((args[0] - 10) * (args[0] - 10) + args[1] * args[1] - 25) * ((args[0] - 10) * (args[0] - 10) + args[1] * args[1] - 25),
+                    args[0] - args[1] + 5
+                },
+
+                "Intersect3Line" => new[]
+                {
+                    (args[1] - args[0] + 5) * (args[1] - args[0] + 5) + (args[1] - 2 * args[0] - 5) * (args[1] - 2 * args[0] - 5),
+                    args[1] + args[0] - 5
+                },
+
+                _ => throw new ArgumentOutOfRangeException(nameof(systemName), systemName, null)
+            },
+            _ => throw new Exception("[Panic] ALL DIED")
+        };
+    }
+
     private static double[,] EvalJacobian(
         string systemName,
         double[] args,
@@ -180,31 +243,107 @@ public static class SONLE
         {
             return jacobianTrial;
         }
-        else
+
+        var maxI = 0;
+        var maxIVal = Math.Abs(f[0]);
+
+        for (var i = 0; i < funcsNum; i++)
         {
-            var jacobian = new double[args.Length, args.Length];
-            var maxI = 0;
-            var maxIVal = Math.Abs(f[0]);
-
-            for (var i = 0; i < funcsNum; i++)
+            if (maxIVal < Math.Abs(f[i]))
             {
-                if (maxIVal < Math.Abs(f[i]))
-                {
-                    maxIVal = Math.Abs(f[i]);
-                    maxI = i;
-                }
-            }
-
-            for (var i = 0; i < funcsNum; i++)
-            {
-                if (i == maxI)
-                {
-                    continue;
-                }
-
-                // TODO: Add elimination
+                maxIVal = Math.Abs(f[i]);
+                maxI = i;
             }
         }
 
+        return EvalConvJacobian(systemName, args, maxI);
+    }
+
+    private static double[,] EvalConvJacobian(
+        string systemName,
+        double[] args,
+        int i
+    )
+    {
+        return i switch
+        {
+            0 => systemName switch
+            {
+                "Intersect1PointCircleLine" => new[,] 
+                {
+                    {
+                        2 * args[0], 
+                        2 * args[1]
+                    }, 
+                    {
+                        4 * (args[0] - 10) * (75 - 20 * args[0] + args[0] * args[0] + args[1] * args[1]) + 2 * (args[0] - args[1] + 5), 
+                        4 * args[1] * (args[0] * args[0] - 20 * args[0] + args[1] * args[1] + 75) - 2 * (args[0] - args[1] + 5) 
+                    }
+                },
+
+                "Intersect3Line" => new[,]
+                {
+                    {
+                        -1.0, 1.0
+                    },
+                    {
+                        10 * args[0] - 2 * args[1] + 10, 10 * args[0] - 2 * args[1] + 10
+                    }
+                },
+
+                _ => throw new ArgumentOutOfRangeException(nameof(systemName), systemName, null)
+            },
+            1 => systemName switch
+            {
+                "Intersect1PointCircleLine" => new[,]
+                {
+                    {
+                        2 * (args[0] - 10), 
+                        2 * args[1]
+                    },
+                    {
+                        4 * args[0] * (args[0] * args[0] + args[1] * args[1] - 25) + 2 * (args[0] - args[1] + 5),
+                        4 * args[1] * (args[0] * args[0] + args[1] * args[1] - 25) - 2 * (args[0] - args[1] + 5)
+                    }
+                },
+
+                "Intersect3Line" => new[,]
+                {
+                    {
+                        -2.0, 1.0
+                    },
+                    {
+                        4 * args[0] - 20, 4 * args[1]
+                    }
+                },
+                _ => throw new ArgumentOutOfRangeException(nameof(systemName), systemName, null)
+            },
+            2 => systemName switch
+            {
+                "Intersect1PointCircleLine" => new[,]
+                {
+                    {
+                        4 * args[0] * (args[0] * args[0] + args[1] * args[1] - 25) +
+                        4 * (args[0] - 10) * (75 - 20 * args[0] + args[0] * args[0] + args[1] * args[1]),
+
+                        4 * args[1] * (args[0] * args[0] + args[1] * args[1] - 25) +
+                        4 * args[1] * (args[0] * args[0] - 20 * args[0] + args[1] * args[1] + 75) 
+                    },
+                    {
+                        1.0, -1.0
+                    }
+                },
+
+                "Intersect3Line" => new[,] {
+                {
+                    10 * args[0] - 6 * args[1] + 10, -6 * args[0] + 4 * args[1]
+                },
+                {
+                    1.0, 1.0
+                }},
+                _ => throw new ArgumentOutOfRangeException(nameof(systemName), systemName, null)
+            },
+            _ => throw new Exception("[Panic] ALL DIED")
+        };
     }
 }
