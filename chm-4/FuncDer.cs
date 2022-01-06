@@ -24,6 +24,7 @@ public static class FuncDer
             "Intersect0PointCircle" => (Intersect0PointCircle(i, argsPlusH) - Intersect0PointCircle(i, args)) / h,
             "Intersect1PointCircleLine" => (Intersect1PointCircleLine(i, argsPlusH) - Intersect1PointCircleLine(i, args)) / h,
             "Intersect3Line" => (Intersect3Line(i, argsPlusH) - Intersect3Line(i, args)) / h,
+            "Sin" => (Sin(i, argsPlusH) - Sin(i, args)) / h,
             _ => throw new ArgumentException($"No such function as {systemName} exist.")
         };
     }

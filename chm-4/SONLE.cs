@@ -153,6 +153,14 @@ public static class SONLE
 
                 break;
 
+            case "Sin":
+                for (var i = 0; i < funcsNum; i++)
+                {
+                    f[i] = SOE.Sin(i, args);
+                }
+
+                break;
+
             default:
                 throw new ArgumentException("No such systemName exist.");
         }
@@ -231,8 +239,7 @@ public static class SONLE
         int varsNum
     )
     {
-        var jacobianTrial = new double[varsNum, funcsNum];
-        var f = EvalFuncs(systemName, args, funcsNum);
+        var jacobian = new double[varsNum, funcsNum];
 
         var evalDerivative = FuncDer.EvalAnalytic;
 
@@ -245,28 +252,11 @@ public static class SONLE
         {
             for (var j = 0; j < varsNum; j++)
             {
-                jacobianTrial[i, j] = evalDerivative(systemName, args, i, j);
+                jacobian[i, j] = evalDerivative(systemName, args, i, j);
             }
         }
 
-        if (varsNum == funcsNum)
-        {
-            return jacobianTrial;
-        }
-
-        var maxI = 0;
-        var maxIVal = Math.Abs(f[0]);
-
-        for (var i = 0; i < funcsNum; i++)
-        {
-            if (maxIVal < Math.Abs(f[i]))
-            {
-                maxIVal = Math.Abs(f[i]);
-                maxI = i;
-            }
-        }
-
-        return EvalConvJacobian(systemName, args, maxI);
+        return jacobian;
     }
 
     private static (double[,], double[]) EvalConvSystem(

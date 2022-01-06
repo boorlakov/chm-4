@@ -4,6 +4,23 @@ public static class SOE
 {
     /// <summary>
     /// SOE kind of
+    /// 1) sin x = 0
+    /// 2) x - 2 = 0
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException">If required more than 2 equations</exception>
+    public static double Sin(int i, double[] args)
+    {
+        return i switch
+        {
+            0 => Math.Sin(args[0]),
+            1 => args[0] + args[1] - Math.PI,
+            _ => throw new ArgumentException($"No such index ({i}) exist")
+        };
+    }
+
+    /// <summary>
+    /// SOE kind of
     /// 1) x^2 + y^2 = 25
     /// 2) (x - 11)^2 + y^2 = 25
     /// </summary>
