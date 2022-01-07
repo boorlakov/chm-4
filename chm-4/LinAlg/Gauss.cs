@@ -10,6 +10,17 @@ public static class Gauss
     /// <returns>Solution vector</returns>
     public static double[] Solve(double[,] matrixA, double[] vectorB)
     {
+        for (var i = 0; i < matrixA.GetLength(1); i++)
+        {
+            for (var j = 0; j < matrixA.GetLength(0); j++)
+            {
+                if (matrixA[i, j] == 0.0)
+                {
+                    throw new CannotSolveSLAEException();
+                }
+            }
+        }
+
         var extendedMatrix = Elimination(matrixA, vectorB);
 
         var vectorX = BackSubstitution(extendedMatrix);
